@@ -1,3 +1,27 @@
 <Solution>
+  <Folder Name="/Cart/">
+    <Project Path="Cart.Application/Cart.Application.csproj" />
+    <Project Path="Cart.Domain/Cart.Domain.csproj" />
+    <Project Path="Cart.Infrastructure/Cart.Infrastructure.csproj" />
+    <Project Path="CartService/CartService.csproj" />
+  </Folder>
+  <Folder Name="/Catalog/">
+    <Project Path="Catalog.Application/Catalog.Application.csproj" />
+    <Project Path="Catalog.Domain/Catalog.Domain.csproj" />
+    <Project Path="Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
+    <Project Path="CatalogService/CatalogService.csproj" />
+  </Folder>
+  <Folder Name="/Identity/">
+    <Project Path="Identity.Application/Identity.Application.csproj" />
+    <Project Path="Identity.Domain/Identity.Domain.csproj" />
+    <Project Path="Identity.Infrastructure/Identity.Infrastructure.csproj" />
+    <Project Path="IdentityService/IdentityService.csproj" />
+  </Folder>
+  <Folder Name="/Order/">
+    <Project Path="Order.Application/Order.Application.csproj" />
+    <Project Path="Order.Domain/Order.Domain.csproj" />
+    <Project Path="Order.Infrastructure/Order.Infrastructure.csproj" />
+    <Project Path="OrderService/OrderService.csproj" />
+  </Folder>
   <Project Path="TryDDD/TryDDD.csproj" />
 </Solution>
