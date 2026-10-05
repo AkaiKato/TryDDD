@@ -23,5 +23,10 @@
     <Project Path="Order.Infrastructure/Order.Infrastructure.csproj" />
     <Project Path="OrderService/OrderService.csproj" />
   </Folder>
+  <Folder Name="/Shared/">
+    <Project Path="Shared.AspNet/Shared.AspNet.csproj" />
+    <Project Path="Shared.Auth/Shared.Auth.csproj" />
+    <Project Path="Shared.Exceptions/Shared.Exceptions.csproj" />
+  </Folder>
   <Project Path="TryDDD/TryDDD.csproj" />
 </Solution>
