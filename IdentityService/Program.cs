@@ -1,4 +1,6 @@
+using Identity.Domain.Repositories;
 using Identity.Infrastructure.Data;
+using Identity.Infrastructure.Repositories;
 using IdentityService.OpenAPI;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -11,6 +13,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
 
