@@ -9,13 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
-
 builder.Services.AddDbContext<CartDbContext>(options =>
     options.UseNpgsql(connectionString));
-
-builder.Services.AddScoped<CartDbContext>();
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
 
@@ -29,6 +24,10 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<ValidationFilter>();
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Configure(builder.Configuration.GetSection("Kestrel"));
+});
 
 var app = builder.Build();
 

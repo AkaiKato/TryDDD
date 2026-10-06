@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/identity")]
+    public class IdentityController : ControllerBase
     {
 
     }

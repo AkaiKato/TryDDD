@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace OrderService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("api/order")]
+    public class OrderController : ControllerBase
     {
 
     }
