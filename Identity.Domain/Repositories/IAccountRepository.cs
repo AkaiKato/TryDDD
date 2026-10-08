@@ -11,5 +11,7 @@ namespace Identity.Domain.Repositories
         Task<Account?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
         Task UpdateAsync(Account account, CancellationToken cancellationToken = default);
+
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

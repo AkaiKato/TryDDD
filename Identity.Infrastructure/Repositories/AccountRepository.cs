@@ -3,17 +3,12 @@ using Identity.Domain.Repositories;
 using Identity.Domain.ValueObjects;
 using Identity.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Shared.Exceptions.Exceptions;
 
 namespace Identity.Infrastructure.Repositories
 {
     public class AccountRepository(IdentityDbContext context) : IAccountRepository
     {
-        public async Task AddAsync(Account account, CancellationToken cancellationToken = default)
-        {
-            context.Accounts.Add(ToRow(account));
-            await context.SaveChangesAsync(cancellationToken);
-        }
-
         public async Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var row = await context.Accounts
@@ -33,6 +28,11 @@ namespace Identity.Infrastructure.Repositories
             return row is null ? null : ToAccount(row);
         }
 
+        public async Task AddAsync(Account account, CancellationToken cancellationToken = default)
+        {
+            context.Accounts.Add(ToRow(account));
+        }
+
         public async Task UpdateAsync(Account account, CancellationToken cancellationToken = default)
         {
             var row = await context.Accounts
@@ -40,13 +40,16 @@ namespace Identity.Infrastructure.Repositories
 
             if (row is null)
             {
-                throw new InvalidOperationException($"Account {account.Id} was not found.");
+                throw new NotFoundException($"Account {account.Id} was not found.");
             }
 
             row.Email = account.Email;
             row.PasswordHash = account.PasswordHash;
             row.Status = account.AccountStatus;
+        }
 
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
             await context.SaveChangesAsync(cancellationToken);
         }
 

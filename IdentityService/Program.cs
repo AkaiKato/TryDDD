@@ -1,7 +1,13 @@
+using Identity.Application.Commands;
+using Identity.Domain.Heplers;
 using Identity.Domain.Repositories;
 using Identity.Infrastructure.Data;
+using Identity.Infrastructure.Helpers;
 using Identity.Infrastructure.Repositories;
+using IdentityService.Background;
+using IdentityService.Consumers;
 using IdentityService.OpenAPI;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Shared.AspNet;
@@ -15,6 +21,11 @@ builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IOutbox, Outbox>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(RegisterAccountCommand).Assembly));
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
 
@@ -32,6 +43,23 @@ builder.WebHost.ConfigureKestrel(options =>
 {
     options.Configure(builder.Configuration.GetSection("Kestrel"));
 });
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<AccountRegisteredConsumer>();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
+builder.Services.AddHostedService<OutboxDispatcher>();
 
 var app = builder.Build();
 

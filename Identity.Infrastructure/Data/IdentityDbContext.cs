@@ -6,6 +6,7 @@ namespace Identity.Infrastructure.Data
     public class IdentityDbContext : DbContext
     {
         public DbSet<AccountRow> Accounts => Set<AccountRow>();
+        public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)
