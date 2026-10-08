@@ -2,9 +2,11 @@ using Identity.Application.Commands;
 using Identity.Application.Queries;
 using Identity.Domain.Heplers;
 using Identity.Domain.Repositories;
+using Identity.Domain.Security;
 using Identity.Infrastructure.Data;
 using Identity.Infrastructure.Helpers;
 using Identity.Infrastructure.Repositories;
+using Identity.Infrastructure.Security;
 using IdentityService.Background;
 using IdentityService.Consumers;
 using IdentityService.OpenAPI;
@@ -24,6 +26,7 @@ builder.Services.AddDbContext<IdentityDbContext>(options =>
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IOutbox, Outbox>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<ITokenService, JwtTokenService>();
 
 builder.Services.AddMediatR(cfg =>
 {

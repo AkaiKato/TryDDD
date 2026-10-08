@@ -16,6 +16,7 @@ namespace Identity.Application.Commands
             
             existingAccount.Block();
 
+            await accountRepository.UpdateAsync(existingAccount);
             await accountRepository.SaveChangesAsync(cancellationToken);
         }
     }

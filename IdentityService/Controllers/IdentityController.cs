@@ -1,4 +1,5 @@
 using Identity.Application.Commands;
+using Identity.Application.Queries;
 using IdentityService.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,20 @@ namespace IdentityService.Controllers
         {
             await mediator.Send(new UnBlockAccountCommand(Id), ct);
             return Ok("Successfully Unblocked");
+        }
+
+        [HttpGet("GetAccount")]
+        public async Task<IActionResult> GetAccount([FromQuery] Guid Id, CancellationToken ct)
+        {
+            var account = await mediator.Send(new GetAccountByIdQuery(Id), ct);
+            return Ok(account);
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginDto data, CancellationToken ct)
+        {
+            var token = await mediator.Send(new LoginCommand(data.Email, data.Password), ct);
+            return Ok(new { Token = token });
         }
     }
 }
