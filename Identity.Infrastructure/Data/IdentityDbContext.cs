@@ -7,6 +7,7 @@ namespace Identity.Infrastructure.Data
     {
         public DbSet<AccountRow> Accounts => Set<AccountRow>();
         public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+        public DbSet<RefreshSessionRow> RefreshSessions => Set<RefreshSessionRow>();
 
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)
@@ -17,6 +18,7 @@ namespace Identity.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AccountRowConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshSessionRowConfiguration());
         }
     }
 }

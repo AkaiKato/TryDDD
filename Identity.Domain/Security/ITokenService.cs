@@ -2,9 +2,12 @@
 
 namespace Identity.Domain.Security
 {
+    public record IssuedRefreshToken(string Token, string TokenHash, DateTime ExpiresAt);
+
     public interface ITokenService
     {
         string GenerateAccessToken(Account account);
-        string GenerateRefreshToken();
+        IssuedRefreshToken GenerateRefreshToken();
+        string HashRefreshToken(string refreshToken);
     }
 }

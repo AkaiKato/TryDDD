@@ -72,6 +72,33 @@ namespace Identity.Infrastructure.Data.Migrations
 
                     b.ToTable("OutboxMessages");
                 });
+
+            modelBuilder.Entity("Identity.Infrastructure.Data.RefreshSessionRow", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.ToTable("RefreshSessions", (string)null);
+                });
 #pragma warning restore 612, 618
         }
     }

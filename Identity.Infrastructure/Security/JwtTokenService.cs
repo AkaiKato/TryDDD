@@ -33,12 +33,24 @@ namespace Identity.Infrastructure.Security
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateRefreshToken()
+        public IssuedRefreshToken GenerateRefreshToken()
         {
             var randomNumber = new byte[64];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
+            RandomNumberGenerator.Fill(randomNumber);
+            var token = Convert.ToBase64String(randomNumber);
+            var lifetimeDays = config["Jwt:RefreshTokenLifetimeDays"]
+                ?? throw new InvalidOperationException("Jwt:RefreshTokenLifetimeDays is missing");
+
+            return new IssuedRefreshToken(
+                token,
+                HashRefreshToken(token),
+                DateTime.UtcNow.AddDays(Convert.ToDouble(lifetimeDays)));
+        }
+
+        public string HashRefreshToken(string refreshToken)
+        {
+            var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken));
+            return Convert.ToBase64String(hashBytes);
         }
     }
 }

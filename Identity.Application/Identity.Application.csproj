@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Shared.Exceptions\Shared.Exceptions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>C:\Users\rail2\AppData\Local\Temp\cursor-sandbox-cache\a29c6dd0169e09fad2c47fe342d28d77\nuget\microsoft.extensions.configuration.abstractions\10.0.12\lib\net10.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

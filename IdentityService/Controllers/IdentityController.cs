@@ -43,7 +43,14 @@ namespace IdentityService.Controllers
         public async Task<IActionResult> Login(LoginDto data, CancellationToken ct)
         {
             var token = await mediator.Send(new LoginCommand(data.Email, data.Password), ct);
-            return Ok(new { Token = token });
+            return Ok(new { token.AccessToken, token.RefreshToken });
+        }
+
+        [HttpPost("Refresh")]
+        public async Task<IActionResult> Refresh(RefreshTokenDto data, CancellationToken ct)
+        {
+            var token = await mediator.Send(new RefreshTokenCommand(data.RefreshToken), ct);
+            return Ok(new { token.AccessToken, token.RefreshToken });
         }
     }
 }
