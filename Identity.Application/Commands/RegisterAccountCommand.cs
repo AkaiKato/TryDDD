@@ -14,25 +14,21 @@ namespace Identity.Application.Commands
         IPasswordHasher passwordHasher)
         : IRequestHandler<RegisterAccountCommand, Guid>
     {
-        private readonly IAccountRepository _accountRepository = accountRepository;
-        private readonly IOutbox _outbox = outbox;
-        private readonly IPasswordHasher _passwordHasher = passwordHasher;
-
         public async Task<Guid> Handle(RegisterAccountCommand request, CancellationToken cancellationToken)
         {
-            var existingAccount = await _accountRepository.GetByEmailAsync(request.Email, cancellationToken);
+            var existingAccount = await accountRepository.GetByEmailAsync(request.Email, cancellationToken);
             if (existingAccount is not null)
             {
                 throw new ConflictException($"An account with email {request.Email} already exists.");
             }
 
-            var hashedPassword = _passwordHasher.HashPassword(request.Password);
+            var hashedPassword = passwordHasher.HashPassword(request.Password);
             var newAccount = Account.Register(request.Email, hashedPassword);
 
-            await _accountRepository.AddAsync(newAccount, cancellationToken);
-            await _outbox.EnqueueAsync(newAccount.DomainEvents, cancellationToken);
+            await accountRepository.AddAsync(newAccount, cancellationToken);
+            await outbox.EnqueueAsync(newAccount.DomainEvents, cancellationToken);
             newAccount.ClearDomainEvents();
-            await _accountRepository.SaveChangesAsync(cancellationToken);
+            await accountRepository.SaveChangesAsync(cancellationToken);
 
             return newAccount.Id;
         }

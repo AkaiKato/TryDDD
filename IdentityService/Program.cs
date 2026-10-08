@@ -1,4 +1,5 @@
 using Identity.Application.Commands;
+using Identity.Application.Queries;
 using Identity.Domain.Heplers;
 using Identity.Domain.Repositories;
 using Identity.Infrastructure.Data;
@@ -25,7 +26,12 @@ builder.Services.AddScoped<IOutbox, Outbox>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(typeof(RegisterAccountCommand).Assembly));
+{
+    cfg.RegisterServicesFromAssembly(typeof(RegisterAccountCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetAccountByIdQuery).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(UnBlockAccountCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(BlockAccountCommand).Assembly);
+});
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
 
