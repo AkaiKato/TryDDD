@@ -2,6 +2,7 @@ using Identity.Application.Commands;
 using Identity.Application.Queries;
 using IdentityService.DTO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityService.Controllers
@@ -18,6 +19,7 @@ namespace IdentityService.Controllers
             return Ok(new { AccountId = accountId });
         }
 
+        [Authorize]
         [HttpPut("Block")]
         public async Task<IActionResult> Block([FromQuery] Guid Id, CancellationToken ct)
         {
@@ -25,6 +27,7 @@ namespace IdentityService.Controllers
             return Ok("Successfully blocked");
         }
 
+        [Authorize]
         [HttpPut("UnBlock")]
         public async Task<IActionResult> UnBlock([FromQuery] Guid Id, CancellationToken ct)
         {
@@ -32,6 +35,7 @@ namespace IdentityService.Controllers
             return Ok("Successfully Unblocked");
         }
 
+        [Authorize]
         [HttpGet("GetAccount")]
         public async Task<IActionResult> GetAccount([FromQuery] Guid Id, CancellationToken ct)
         {

@@ -73,6 +73,8 @@ builder.Services.AddHostedService<OutboxDispatcher>();
 
 var app = builder.Build();
 
+app.UseSharedExceptionHandling();
+
 app.MapOpenApi();
 app.MapScalarApiReference();
 
