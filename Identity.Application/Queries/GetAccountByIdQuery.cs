@@ -20,7 +20,7 @@ namespace Identity.Application.Queries
             {
                 Id = account.Id,
                 AccountStatus = account.AccountStatus,
-                Email = account.Email
+                Email = account.Email.Email
             };
         }
     }

@@ -16,7 +16,7 @@ namespace Identity.Infrastructure.Security
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimTypes.Email, account.Email),
+                new Claim(ClaimTypes.Email, account.Email.Email),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is missing")));

@@ -7,7 +7,7 @@ namespace Identity.Domain.Aggregates.IdentityAggregate
     public class Account : AggregateRoot<Guid>
     {
 
-        public string Email { get; private set; }
+        public EmailValueObject Email { get; private set; }
 
         public string PasswordHash { get; private set; }
 
@@ -15,7 +15,7 @@ namespace Identity.Domain.Aggregates.IdentityAggregate
 
         private Account(Guid id, string email, string passwordHash, AccountStatus status) : base(id)
         {
-            Email = EmailValueObject.Create(email).Email;
+            Email = EmailValueObject.Create(email);
             PasswordHash = PasswordHashValueObject.Create(passwordHash).Hash;
             AccountStatus = status;
         }

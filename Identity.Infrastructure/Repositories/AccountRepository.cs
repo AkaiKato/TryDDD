@@ -43,7 +43,7 @@ namespace Identity.Infrastructure.Repositories
                 throw new NotFoundException($"Account {account.Id} was not found.");
             }
 
-            row.Email = account.Email;
+            row.Email = account.Email.Email;
             row.PasswordHash = account.PasswordHash;
             row.Status = account.AccountStatus;
         }
@@ -56,7 +56,7 @@ namespace Identity.Infrastructure.Repositories
         private static AccountRow ToRow(Account account) => new()
         {
             Id = account.Id,
-            Email = account.Email,
+            Email = account.Email.Email,
             PasswordHash = account.PasswordHash,
             Status = account.AccountStatus
         };
