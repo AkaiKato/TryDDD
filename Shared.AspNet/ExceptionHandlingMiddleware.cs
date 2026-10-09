@@ -27,7 +27,7 @@ namespace Shared.AspNet
                         context.Request.Method, context.Request.Path);
                     throw;
                 }
-                if (ex is UnauthorizedAccessException || ex is AppException)
+                if (ex is UnauthorizedAccessException or AppException or ArgumentException or InvalidOperationException)
                 {
                     logger.LogWarning("Business rule violation: {Message}", ex.Message);
                 }
@@ -46,6 +46,7 @@ namespace Shared.AspNet
             {
                 AppException appEx => appEx.StatusCode,
                 UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
+                ArgumentException or InvalidOperationException => (int)HttpStatusCode.BadRequest,
                 _ => (int)HttpStatusCode.InternalServerError
             };
 
