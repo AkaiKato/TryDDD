@@ -25,7 +25,7 @@ namespace Catalog.Domain.Aggregates
         }
 
         public static Game Restore(Guid id, string name, decimal price, GameStatus gameStatus)
-            => new(id, GameName.Create(name), Money.Create(price, Currency.RUB), gameStatus);
+            => new(id, GameName.Create(name), Money.Create(price/100, Currency.RUB), gameStatus);
 
         public void Publish()
         {
