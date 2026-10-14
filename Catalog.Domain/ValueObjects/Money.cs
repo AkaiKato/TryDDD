@@ -20,7 +20,7 @@
 
             if (cents != decimal.Truncate(cents) || cents <= 0 || cents > long.MaxValue)
             {
-                throw new ArgumentException("Amount must be a positive whole number of kopecks.", nameof(amount));
+                throw new ArgumentException("Amount must be a positive whole number of cents.", nameof(amount));
             }
 
             return new Money((long)cents, currency);
