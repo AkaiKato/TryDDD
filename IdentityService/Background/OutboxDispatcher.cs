@@ -40,10 +40,8 @@ namespace IdentityService.Background
                 .OrderBy(x => x.OccurredOn)
                 .FirstOrDefaultAsync(stoppingToken);
 
-            if(message is null)
-            {
+            if(message == null)
                 return;
-            }
 
             if (message.Type == typeof(AccountRegistered).FullName)
             {
