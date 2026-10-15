@@ -1,5 +1,12 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Order.Application.Checkouts;
+using Order.Application.Snapshots;
+using Order.Domain.Repositories;
 using Order.Infrastructure.Data;
+using Order.Infrastructure.Repositories;
+using Order.Infrastructure.RepositoriesForSnapshots;
+using OrderService.Consumers;
 using OrderService.OpenAPI;
 using Scalar.AspNetCore;
 using Shared.AspNet;
@@ -11,6 +18,34 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ILicenseKeyRepository, LicenseKeyRepository>();
+builder.Services.AddScoped<IRejectedCheckoutRepository, RejectedCheckoutRepository>();
+builder.Services.AddScoped<IGameSnapshotRepository, GameSnapshotRepository>();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<GamePublishedConsumer>();
+    x.AddConsumer<PriceChangedConsumer>();
+    x.AddConsumer<GameRenamedConsumer>();
+    x.AddConsumer<GameArchivedConsumer>();
+    x.AddEntityFrameworkOutbox<OrderDbContext>(z =>
+    {
+        z.UsePostgres();
+        z.UseBusOutbox();
+    });
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
 

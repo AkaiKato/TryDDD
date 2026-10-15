@@ -40,7 +40,7 @@ namespace Cart.Domain.Aggregates
             Guid checkoutId,
             IReadOnlyList<CartLine> lines)
         {
-            if (lines is null)
+            if (lines == null)
                 throw new ArgumentNullException(nameof(lines));
 
             if (cartStatus == CartStatus.CheckoutPending && checkoutId == Guid.Empty)
