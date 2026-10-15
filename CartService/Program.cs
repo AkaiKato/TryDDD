@@ -54,6 +54,8 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<PriceChangedConsumer>();
     x.AddConsumer<GameRenamedConsumer>();
     x.AddConsumer<GameArchivedConsumer>();
+    x.AddConsumer<CheckoutAcceptedConsumer>();
+    x.AddConsumer<CheckoutRejectedConsumer>();
     x.AddEntityFrameworkOutbox<CartDbContext>(z =>
     {
         z.UsePostgres();

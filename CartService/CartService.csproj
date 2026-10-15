@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cart.Infrastructure\Cart.Infrastructure.csproj" />
     <ProjectReference Include="..\Catalog.Domain\Catalog.Domain.csproj" />
+    <ProjectReference Include="..\Order.Domain\Order.Domain.csproj" />
     <ProjectReference Include="..\Shared.AspNet\Shared.AspNet.csproj" />
     <ProjectReference Include="..\Shared.Auth\Shared.Auth.csproj" />
   </ItemGroup>
