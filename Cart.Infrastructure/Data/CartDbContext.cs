@@ -1,4 +1,5 @@
 ﻿using Cart.Infrastructure.Configurations;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cart.Infrastructure.Data
@@ -17,6 +18,9 @@ namespace Cart.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.AddOutboxStateEntity();
+            modelBuilder.AddOutboxMessageEntity();
+            modelBuilder.AddInboxStateEntity();
             modelBuilder.ApplyConfiguration(new CartConfiguration());
             modelBuilder.ApplyConfiguration(new CartItemConfiguration());
             modelBuilder.ApplyConfiguration(new GameSnapshotConfiguration());

@@ -36,5 +36,12 @@ namespace CartService.Controllers
             var cart = await mediator.Send(new GetCartQuery(currentUserService.UserId), ct);
             return Ok(cart);
         }
+
+        [HttpPut("RequestCheckout")]
+        public async Task<IActionResult> RequestCheckout(CancellationToken ct)
+        {
+            var requestId = await mediator.Send(new RequestCheckoutCommand(currentUserService.UserId), ct);
+            return Ok(new { RequestId = requestId });
+        }
     }
 }

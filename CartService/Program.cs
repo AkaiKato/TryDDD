@@ -1,4 +1,5 @@
 using Cart.Application.Commands;
+using Cart.Application.Queries;
 using Cart.Application.Snapshots;
 using Cart.Domain.Repositories;
 using Cart.Infrastructure.Data;
@@ -25,6 +26,9 @@ builder.Services.AddScoped<IGameSnapshotRepository, GameSnapshotRepository>();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(AddToCartCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(RequestCheckoutCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(UpdateCartItemCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetCartQuery).Assembly);
 });
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
@@ -50,7 +54,11 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<PriceChangedConsumer>();
     x.AddConsumer<GameRenamedConsumer>();
     x.AddConsumer<GameArchivedConsumer>();
-    x.AddInMemoryInboxOutbox();
+    x.AddEntityFrameworkOutbox<CartDbContext>(z =>
+    {
+        z.UsePostgres();
+        z.UseBusOutbox();
+    });
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("localhost", "/", h =>
@@ -78,7 +86,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-if(app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
     {
