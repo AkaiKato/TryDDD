@@ -52,7 +52,6 @@ namespace CatalogService.Controllers
             return Ok("Game archived successfully");
         }
 
-        [Authorize]
         [HttpPut("GetAllGames")]
         public async Task<IActionResult> GetAllGames(CancellationToken ct)
         {

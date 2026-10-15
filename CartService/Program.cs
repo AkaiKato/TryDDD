@@ -1,5 +1,12 @@
+using Cart.Application.Commands;
+using Cart.Application.Snapshots;
+using Cart.Domain.Repositories;
 using Cart.Infrastructure.Data;
+using Cart.Infrastructure.Repositories;
+using Cart.Infrastructure.RepositoriesForSnapshots;
+using CartService.Consumers;
 using CartService.OpenAPI;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Shared.AspNet;
@@ -11,6 +18,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<CartDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IGameSnapshotRepository, GameSnapshotRepository>();
+
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(AddToCartCommand).Assembly);
+});
 
 builder.Services.AddSharedAuthentication(builder.Configuration);
 
@@ -29,7 +44,28 @@ builder.WebHost.ConfigureKestrel(options =>
     options.Configure(builder.Configuration.GetSection("Kestrel"));
 });
 
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<GamePublishedConsumer>();
+    x.AddConsumer<PriceChangedConsumer>();
+    x.AddConsumer<GameRenamedConsumer>();
+    x.AddConsumer<GameArchivedConsumer>();
+    x.AddInMemoryInboxOutbox();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
+
 var app = builder.Build();
+
+app.UseSharedExceptionHandling();
 
 app.MapOpenApi();
 app.MapScalarApiReference();

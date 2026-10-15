@@ -7,13 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="MassTransit" Version="8.5.11" />
+	<PackageReference Include="MassTransit.RabbitMQ" Version="8.5.11" />
+	<PackageReference Include="MediatR" Version="14.2.0" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Scalar.AspNetCore" Version="2.17.13" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Cart.Infrastructure\Cart.Infrastructure.csproj" />
+    <ProjectReference Include="..\Catalog.Domain\Catalog.Domain.csproj" />
     <ProjectReference Include="..\Shared.AspNet\Shared.AspNet.csproj" />
     <ProjectReference Include="..\Shared.Auth\Shared.Auth.csproj" />
   </ItemGroup>
