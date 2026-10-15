@@ -57,7 +57,7 @@ namespace Order.Infrastructure.Repositories
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await context.SaveChangesAsync(cancellationToken);
+            await OrderDbSave.SaveAsync(context, cancellationToken);
         }
 
         private static LicenseKeyRow ToRow(LicenseKey licenseKey) => new()

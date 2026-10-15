@@ -1,6 +1,8 @@
 using MassTransit;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Order.Application.Checkouts;
+using Order.Application.Commands;
 using Order.Application.Snapshots;
 using Order.Domain.Repositories;
 using Order.Infrastructure.Data;
@@ -24,12 +26,18 @@ builder.Services.AddScoped<ILicenseKeyRepository, LicenseKeyRepository>();
 builder.Services.AddScoped<IRejectedCheckoutRepository, RejectedCheckoutRepository>();
 builder.Services.AddScoped<IGameSnapshotRepository, GameSnapshotRepository>();
 
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(CheckoutRequestedCommand).Assembly);
+});
+
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<GamePublishedConsumer>();
     x.AddConsumer<PriceChangedConsumer>();
     x.AddConsumer<GameRenamedConsumer>();
     x.AddConsumer<GameArchivedConsumer>();
+    x.AddConsumer<CheckoutRequestedConsumer>();
     x.AddEntityFrameworkOutbox<OrderDbContext>(z =>
     {
         z.UsePostgres();
@@ -65,6 +73,8 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 var app = builder.Build();
+
+app.UseSharedExceptionHandling();
 
 app.MapOpenApi();
 app.MapScalarApiReference();

@@ -21,6 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Cart.Domain\Cart.Domain.csproj" />
 		<ProjectReference Include="..\Catalog.Domain\Catalog.Domain.csproj" />
 		<ProjectReference Include="..\Order.Infrastructure\Order.Infrastructure.csproj" />
 		<ProjectReference Include="..\Shared.AspNet\Shared.AspNet.csproj" />
